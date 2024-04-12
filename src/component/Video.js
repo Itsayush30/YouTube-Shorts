@@ -8,6 +8,8 @@ import NearMeIcon from "@material-ui/icons/NearMe";
 import React, { useRef, useState } from "react";
 import "./css/Video.css";
 import Ticker from "react-ticker";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleLike } from "../utils/likeSlice";
 
 function Videos({
   id,
@@ -21,6 +23,14 @@ function Videos({
 }) {
   const [playing, setPlaying] = useState(false);
   const [subs, setSubs] = useState(false);
+
+  const likeState = useSelector((store) => store?.like?.isLike);
+
+  const dispatch = useDispatch();
+
+  const likeToggle = () => {
+    dispatch(toggleLike());
+  };
 
   const videoRef = useRef(null);
   const handleVideoPress = () => {
@@ -46,7 +56,7 @@ function Videos({
         loop
         ref={videoRef}
         src={src}
-      /> 
+      />
 
       <div className="shortsContainer">
         <div className="shortsVideoTop">
@@ -59,8 +69,8 @@ function Videos({
         </div>
         <div className="shortsVideoSideIcons">
           <div className="shortsVideoSideIcon">
-            <ThumbUpIcon />
-            <p>{like}</p>
+            <ThumbUpIcon onClick={() => likeToggle()} />
+            <p>{likeState ? 1 : 0}</p>
           </div>
           <div className="shortsVideoSideIcon">
             <ThumbDownIcon />
@@ -89,10 +99,10 @@ function Videos({
           <div className="shortDetails">
             <Avatar
               src={
-                "https://lh3.googleusercontent.com/ogw/ADGmqu8BCzU8GejYorGqXeu98A1kfEFYKFT85I3_9KJBzfw=s32-c-mo"
+                "https://avatars.githubusercontent.com/u/90981890?s=400&u=c7b0449b25d66927a9097e6cd9a766252ad506da&v=4"
               }
             />
-            <p>Ayush</p>
+            <p>Ayush Gupta</p>
             <button
               style={{
                 background: subs ? "red" : "hsla(0,0%,69.4%,.609)",
