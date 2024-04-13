@@ -6,21 +6,12 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import InsertCommentIcon from "@material-ui/icons/InsertComment";
 import NearMeIcon from "@material-ui/icons/NearMe";
 import React, { useRef, useState } from "react";
+import { useInView } from "react-intersection-observer";
 import "./css/Video.css";
-import Ticker from "react-ticker";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLike } from "../utils/likeSlice";
 
-function Videos({
-  id,
-  src,
-  channel,
-  description,
-  like,
-  dislike,
-  share,
-  comment,
-}) {
+function Videos({ id, src, channel, description, dislike, share, comment }) {
   const [playing, setPlaying] = useState(false);
   const [subs, setSubs] = useState(false);
 
@@ -33,22 +24,34 @@ function Videos({
   };
 
   const videoRef = useRef(null);
+
+  const { ref, inView } = useInView({
+    /* Optional options */
+    threshold: 0.5,
+  });
+
   const handleVideoPress = () => {
     if (playing) {
       setPlaying(false);
       videoRef.current.pause();
     } else {
       videoRef.current.play();
-      setPlaying((play) => !play);
+      setPlaying(true);
     }
   };
 
   const handleSubscribe = () => {
-    setSubs((sub) => !sub);
+    setSubs(!subs);
   };
 
+  // Pause the video when it goes out of view
+  if (!inView && playing) {
+    setPlaying(false);
+    videoRef.current.pause();
+  }
+
   return (
-    <div className="video">
+    <div className="video" ref={ref}>
       <video
         id={id}
         className="video__player"
@@ -88,13 +91,7 @@ function Videos({
         </div>
         <div className="shortsBottom">
           <div className="shortsDesc">
-            <Ticker mode="smooth">
-              {({ index }) => (
-                <>
-                  <p className="description">{description}</p>
-                </>
-              )}
-            </Ticker>
+            <p>{description}</p>
           </div>
           <div className="shortDetails">
             <Avatar
@@ -102,7 +99,7 @@ function Videos({
                 "https://avatars.githubusercontent.com/u/90981890?s=400&u=c7b0449b25d66927a9097e6cd9a766252ad506da&v=4"
               }
             />
-            <p>Ayush Gupta</p>
+            <p>{channel}</p>
             <button
               style={{
                 background: subs ? "red" : "hsla(0,0%,69.4%,.609)",

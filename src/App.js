@@ -19,7 +19,9 @@ function App() {
               like={vid.like}
               dislike={vid.dislike}
               id={vid.id}
+              description={vid.description}
               comment={vid.comment}
+              channel={vid.channel}
               share={vid.share}
               src={vid.url}
             />
