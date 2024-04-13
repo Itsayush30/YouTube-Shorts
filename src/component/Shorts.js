@@ -7,11 +7,11 @@ import InsertCommentIcon from "@material-ui/icons/InsertComment";
 import NearMeIcon from "@material-ui/icons/NearMe";
 import React, { useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import "./css/Video.css";
+import "../css/Shorts.css";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleLike } from "../utils/likeSlice";
 
-function Videos({ id, src, channel, description, dislike, share, comment }) {
+function Shorts({ id, src, channel, description, dislike, share, comment }) {
   const [playing, setPlaying] = useState(false);
   const [subs, setSubs] = useState(false);
 
@@ -115,4 +115,4 @@ function Videos({ id, src, channel, description, dislike, share, comment }) {
   );
 }
 
-export default Videos;
+export default Shorts;
